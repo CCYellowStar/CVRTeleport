@@ -40,6 +40,18 @@ namespace CVRTeleport
                     UnityEngine.Object.Destroy(chil.gameObject);
                 }
             }
+            var teleobj2 = GameObject.Find("Cohtml/QuickMenu/");
+            foreach (Transform chil in teleobj2.transform.GetAllChildren())
+            {
+                if (chil.gameObject.name == "Universal UI(Clone)(Clone)")
+                {
+                    var a = chil.Find("Scroll View/Viewport/Content/Back Button/Text (TMP) Title/");
+                    if (a.gameObject.GetComponent<TMPro.TextMeshProUGUI>().text == "Teleport")
+                    {
+                        UnityEngine.Object.Destroy(chil.gameObject);
+                    }
+                }
+            }
             main = ChilloutButtonAPIMain.MainPage.AddSubMenu("Teleport");
             uptele();
 
