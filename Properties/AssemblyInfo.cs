@@ -6,7 +6,7 @@ using MelonLoader;
 // 有关程序集的一般信息由以下
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
-[assembly: MelonInfo(typeof(CVRTeleport.TeleMain), "CVRTeleport", "1", "CCYellowStar")]
+[assembly: MelonInfo(typeof(CVRTeleport.TeleMain), "CVRTeleport", "1.5", "CCYellowStar")]
 [assembly: MelonColor(System.ConsoleColor.DarkMagenta)]
 [assembly: MelonGame("Alpha Blend Interactive", "ChilloutVR")]
 
