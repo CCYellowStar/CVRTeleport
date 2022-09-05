@@ -40,8 +40,23 @@
 		<Reference Include="UnityEngine.CoreModule">
 			<HintPath>D:\cc\steamapps\common\ChilloutVR\ChilloutVR_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
 		</Reference>
+		<Reference Include="UnityEngine.InputLegacyModule">
+		  <HintPath>D:\cc\steamapps\common\ChilloutVR\ChilloutVR_Data\Managed\UnityEngine.InputLegacyModule.dll</HintPath>
+		</Reference>
+		<Reference Include="UnityEngine.InputModule">
+		  <HintPath>D:\cc\steamapps\common\ChilloutVR\ChilloutVR_Data\Managed\UnityEngine.InputModule.dll</HintPath>
+		</Reference>
+		<Reference Include="UnityEngine.PhysicsModule">
+		  <HintPath>D:\cc\steamapps\common\ChilloutVR\ChilloutVR_Data\Managed\UnityEngine.PhysicsModule.dll</HintPath>
+		</Reference>
 		<Reference Include="UnityEngine.UI">
 		  <HintPath>D:\cc\steamapps\common\ChilloutVR\ChilloutVR_Data\Managed\UnityEngine.UI.dll</HintPath>
+		</Reference>
+		<Reference Include="UnityEngine.VRModule">
+		  <HintPath>D:\cc\steamapps\common\ChilloutVR\ChilloutVR_Data\Managed\UnityEngine.VRModule.dll</HintPath>
+		</Reference>
+		<Reference Include="UnityEngine.XRModule">
+		  <HintPath>D:\cc\steamapps\common\ChilloutVR\ChilloutVR_Data\Managed\UnityEngine.XRModule.dll</HintPath>
 		</Reference>
 	</ItemGroup>
 </Project>

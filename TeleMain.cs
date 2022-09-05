@@ -1,4 +1,4 @@
-﻿using System;
+﻿
 using UnityEngine;
 using UnityEngine.UI;
 using MelonLoader;
@@ -9,8 +9,10 @@ using CVRPlayerEntity = ABI_RC.Core.Player.CVRPlayerEntity;
 using ABI_RC.Core.Player;
 using ABI.CCK.Components;
 using HarmonyLib;
+using UnityEngine.XR;
 using System.Reflection;
 using System.Collections.Generic;
+using ABI_RC.Core.InteractionSystem;
 
 namespace CVRTeleport
 {
@@ -18,6 +20,8 @@ namespace CVRTeleport
     {
         public static SubMenu main;
         public static SubMenu main2;
+        public static bool isQmopen=false;
+        public static bool isAmopen=false;
         public static bool isAllow;
         private static List<CVRPlayerEntity> _players { get; set; }
         public static List<Vector3> TPPost = new List<Vector3>();
@@ -28,7 +32,9 @@ namespace CVRTeleport
         public override void OnApplicationStart()
         {
             HarmonyInstance.Patch(AccessTools.Constructor(typeof(PlayerDescriptor)), null, new HarmonyMethod(typeof(TeleMain).GetMethod(nameof(OnPlayerJoined), BindingFlags.NonPublic | BindingFlags.Static)));
-            TeleportCategory=MelonPreferences.CreateCategory("CVRTeleport");
+            HarmonyInstance.Patch(typeof(CVR_MenuManager).GetMethod(nameof(CVR_MenuManager.ToggleQuickMenu), AccessTools.all), null, new HarmonyMethod(typeof(TeleMain).GetMethod(nameof(OnQMStateChange), BindingFlags.NonPublic | BindingFlags.Static)));
+            //HarmonyInstance.Patch(typeof(ViewManager).GetMethod(nameof(ViewManager.UiStateToggle), AccessTools.all), null, new HarmonyMethod(typeof(TeleMain).GetMethod(nameof(OnAMStateChange), BindingFlags.NonPublic | BindingFlags.Static)));
+            TeleportCategory =MelonPreferences.CreateCategory("CVRTeleport");
             isAllowAllplayerTP=TeleportCategory.CreateEntry(
                 "isAllowAllplayerTP",
                 false,
@@ -36,6 +42,17 @@ namespace CVRTeleport
                 "Enabling this option will allow Teleporter to anyone, which may be risky！");
 
         }
+
+         private static void OnAMStateChange(bool __instance)
+        {
+            isAmopen = __instance;
+        }
+
+        private static void OnQMStateChange(bool __0)
+        {
+            isQmopen = __0;
+        }
+
         public override void OnSceneWasLoaded(int buildIndex, string sceneName)
         {
             if (buildIndex != -1)
@@ -165,13 +182,57 @@ namespace CVRTeleport
                 }
             }
         }
-       
-        class playersoft : IComparer<CVRPlayerEntity>
+        public static bool InputDown
         {
-            public int Compare(CVRPlayerEntity x, CVRPlayerEntity y)
+            get
             {
-                return x.Username.CompareTo(y.Username);
+                return (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.T)) || Input.GetKeyDown(KeyCode.Mouse3);
             }
+        }
+
+        public override void OnUpdate()
+        {
+            if (!isAllow)
+            {
+                return;
+            }
+            if (InVR)
+            {
+                return;
+            }
+            if(isAmopen||isQmopen)
+            {
+                return;
+            }
+            if (!__ || !InputDown)
+            {
+                if (!__ && !InputDown)
+                {
+                    __ = true;
+                }
+                return;
+            }
+
+            Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
+            RaycastHit raycastHit;
+            if (Physics.Raycast(ray, out raycastHit))
+            {
+                MovementSystem.Instance.TeleportTo(raycastHit.point);
+            }
+            __ = false;
+        }
+
+        private static readonly bool InVR = XRDevice.isPresent;
+        private static bool __ = true;
+    }
+    class playersoft : IComparer<CVRPlayerEntity>
+    {
+        public int Compare(CVRPlayerEntity x, CVRPlayerEntity y)
+        {
+            return x.Username.CompareTo(y.Username);
         }
     }
 }
+        
+    
+
